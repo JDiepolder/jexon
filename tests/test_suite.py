@@ -26,8 +26,8 @@ class TestCase(unittest.TestCase):
 
     def test_generic(self):
         stdout, stderr = get_stdouterr_from_popen(
-            'ls ../jexon'.format(test_name=self.test_name))
-            # 'cd .. && ls && python -m jexon.execute "tests/test_{test_name}.json" "tests/output_{test_name}.json" "tests/config.json"'.format(test_name=self.test_name))
+            'cd ../jexon && ls && python -m jexon.execute "tests/test_{test_name}.json" "tests/output_{test_name}.json" "tests/config.json"'.format(test_name=self.test_name))
+            # 'ls ../jexon'.format(test_name=self.test_name))
         
         print(stdout)
         
