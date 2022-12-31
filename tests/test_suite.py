@@ -20,7 +20,8 @@ class TestGeneric(unittest.TestCase):
         test_files = glob.glob('test_*.json')
         
         for test_file in test_files:
-
+            print(test_file)
+            
             test_name = test_file[5:-5]
 
             _, stderr = get_stdouterr_from_popen(
