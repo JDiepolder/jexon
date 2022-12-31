@@ -14,6 +14,12 @@ def get_stdouterr_from_popen(cmd):
     return (str(stdout.decode("utf-8")), str(stderr.decode("utf-8")))
 
 def run_and_load(test_name):
+    stdout, stderr = get_stdouterr_from_popen('ls')
+    print(stdout)
+    stdout, stderr = get_stdouterr_from_popen('ls ..')
+    print(stdout)
+    stdout, stderr = get_stdouterr_from_popen('ls ../jexon')
+    print(stdout)
     _, stderr = get_stdouterr_from_popen(
         'cd .. && python3 -m jexon.execute "tests/test_{}.json" "tests/output_{}.json" "tests/config.json"'.format(test_name, test_name))
 
