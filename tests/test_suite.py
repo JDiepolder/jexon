@@ -15,7 +15,7 @@ def get_stdouterr_from_popen(cmd):
 
 def run_and_load(test_name):
     _, stderr = get_stdouterr_from_popen(
-        'python3 -m jexon.execute "tests/test_{}.json" "tests/output_{}.json" "tests/config.json"'.format(test_name))
+        'python3 -m jexon.execute "tests/test_{}.json" "tests/output_{}.json" "tests/config.json"'.format(test_name, test_name))
 
     if stderr:
         print(stderr)
