@@ -15,7 +15,7 @@ def get_stdouterr_from_popen(cmd):
     return (str(stdout.decode("utf-8")), str(stderr.decode("utf-8")))
 
 
-class TestGeneric(unittest.TestGeneric):
+class TestCase(unittest.TestCase):
     def __init__(self):
         super(TestGeneric, self).__init__("test_generic")
 
