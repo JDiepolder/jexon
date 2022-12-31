@@ -2,7 +2,6 @@ import unittest
 import json
 import subprocess
 import os
-import glob
 
 
 def get_stdouterr_from_popen(cmd):
@@ -14,41 +13,32 @@ def get_stdouterr_from_popen(cmd):
     proc.wait()
     return (str(stdout.decode("utf-8")), str(stderr.decode("utf-8")))
 
+def run_and_load(test_name):
+    _, stderr = get_stdouterr_from_popen(
+        'cd .. && python3 -m jexon.execute "tests/test_{}.json" "tests/output_{}.json" "tests/config.json"'.format(test_name))
+
+    if stderr:
+        print(stderr)
+    
+    with open("output_{}.json".format(test_name)) as f:
+        output = json.load(f)
+
+    with open("expected_{}.json".format(test_name)) as f:
+        expected = json.load(f)
+
 
 class TestGeneric(unittest.TestCase):
-    
-    def test_generic(self):
-        test_files = glob.glob('test_*.json')
-        print("running")
-        print(test_files)
-        
-        for test_file in test_files:
-            raise ValueError(test_file)
-            
-            test_name = test_file[5:-5]
 
-            _, stderr = get_stdouterr_from_popen(
-                'cd .. && python3 -m jexon.execute "tests/test_{}.json" "tests/output_{}.json" "tests/config.json"'.format(test_name))
+    def test_flat(self):
+        test_name = "flat"
+        stderr, output, expected = run_and_load(test_name)
+        self.assertEqual(stderr, '', "Test run {} failed.".format(test_name))
+        self.assertEqual(output, expected, "Output is not as expected.")
+        os.remove("output_{}.json".format(test_name))
 
-            if stderr:
-                print(stderr)
-            
-            self.assertEqual(
-                stderr, '', "Test run {} failed.".format(test_name))
-
-            with open("output_{}.json".format(test_name)) as f:
-                self.assertEqual(
-                    f.closed, False, "Output file for {} could not be opened.".format(test_name))
-                output = json.load(f)
-
-            with open("expected_{}.json".format(test_name)) as f:
-                self.assertEqual(
-                    f.closed, False, "Expected file for {} could not be opened.".format(test_name))
-                expected = json.load(f)
-
-            self.assertEqual(output, expected, "Output is not as expected.")
-
-            os.remove("output_{}.json".format(test_name))
-
-    def tearDown(self):
-        pass
+    def test_flat_nested(self):
+        test_name = "flat_nested"
+        stderr, output, expected = run_and_load(test_name)
+        self.assertEqual(stderr, '', "Test run {} failed.".format(test_name))
+        self.assertEqual(output, expected, "Output is not as expected.")
+        os.remove("output_{}.json".format(test_name))
