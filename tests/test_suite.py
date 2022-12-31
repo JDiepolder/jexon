@@ -25,6 +25,8 @@ def run_and_load(test_name):
 
     with open("expected_{}.json".format(test_name)) as f:
         expected = json.load(f)
+        
+    return stderr, output, expected
 
 
 class TestGeneric(unittest.TestCase):
