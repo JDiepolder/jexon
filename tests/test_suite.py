@@ -23,7 +23,7 @@ class TestGeneric(unittest.TestCase):
         print(test_files)
         
         for test_file in test_files:
-            print(test_file)
+            raise ValueError(test_file)
             
             test_name = test_file[5:-5]
 
