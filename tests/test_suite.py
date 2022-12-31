@@ -17,7 +17,7 @@ def get_stdouterr_from_popen(cmd):
 
 class TestCase(unittest.TestCase):
     def __init__(self):
-        super(TestGeneric, self).__init__("test_generic")
+        super(TestCase, self).__init__("test_generic")
 
     def setUp(self):
         self.test_files = glob.glob('test_*.json')
