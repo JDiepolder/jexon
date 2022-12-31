@@ -15,16 +15,11 @@ def get_stdouterr_from_popen(cmd):
     return (str(stdout.decode("utf-8")), str(stderr.decode("utf-8")))
 
 
-class TestCase(unittest.TestCase):
-    def __init__(self):
-        super(TestCase, self).__init__("test_generic")
-
-    def setUp(self):
-        self.test_files = glob.glob('test_*.json')
-        pass
-
+class TestGeneric(unittest.TestCase):
     def test_generic(self):
-        for test_file in self.test_files:
+        test_files = glob.glob('test_*.json')
+        
+        for test_file in test_files:
 
             test_name = test_file[5:-5]
 
@@ -33,6 +28,7 @@ class TestCase(unittest.TestCase):
 
             if stderr:
                 print(stderr)
+            
             self.assertEqual(
                 stderr, '', "Test run {} failed.".format(test_name))
 
