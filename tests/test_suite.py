@@ -42,3 +42,12 @@ class TestGeneric(unittest.TestCase):
 
     def test_flat_nested(self):
         self.run_test("flat_nested")
+        
+    def test_string(self):
+        self.run_test("string")
+
+    def test_flat_modules(self):
+        self.run_test("flat_modules")
+
+    def test_nested(self):
+        self.run_test("nested")
