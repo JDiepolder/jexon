@@ -42,7 +42,7 @@ class TestGeneric(unittest.TestCase):
         stderr, output, expected = run_and_load(test_name)
         self.assertEqual(stderr, '', "Test run {} failed.".format(test_name))
         self.assertEqual(output, expected, "Output is not as expected.")
-        os.remove("output_{}.json".format(test_name))
+        os.remove("tests/output_{}.json".format(test_name))
 
     def test_flat_nested(self):
         test_name = "flat_nested"
