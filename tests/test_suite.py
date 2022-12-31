@@ -16,8 +16,11 @@ def get_stdouterr_from_popen(cmd):
 
 
 class TestGeneric(unittest.TestCase):
+    
     def test_generic(self):
         test_files = glob.glob('test_*.json')
+        print("running")
+        print(test_files)
         
         for test_file in test_files:
             print(test_file)
