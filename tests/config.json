@@ -1,0 +1,42 @@
+{
+    "imports": [
+        {
+            "import": "random"
+        },
+        {
+            "import": "random",
+            "as": "rand"
+        },
+        {
+            "from": "random",
+            "import": "randint",
+            "as": "ri"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "B",
+            "value": 3
+        },
+        {
+            "name": "D",
+            "value": {
+                "E": "F",
+                "G": [
+                    1,
+                    2,
+                    3,
+                    "abc"
+                ]
+            }
+        },
+        {
+            "name": "H",
+            "value": [
+                1,
+                2,
+                3
+            ]
+        }
+    ]
+}
