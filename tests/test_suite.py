@@ -2,7 +2,6 @@ import unittest
 import json
 import subprocess
 import os
-import glob
 
 
 def get_stdouterr_from_popen(cmd):
@@ -14,56 +13,41 @@ def get_stdouterr_from_popen(cmd):
     proc.wait()
     return (str(stdout.decode("utf-8")), str(stderr.decode("utf-8")))
 
+def run_and_load(test_name):
+    _, stderr = get_stdouterr_from_popen(
+        'python3 -m jexon.execute "tests/test_{}.json" "tests/output_{}.json" "tests/config.json"'.format(test_name, test_name))
 
-class TestCase(unittest.TestCase):
-    def __init__(self, test_name):
-        super(TestCase, self).__init__("test_generic")
-        self.test_name = test_name
+    if stderr:
+        print(stderr)
+    
+    with open("tests/output_{}.json".format(test_name)) as f:
+        output = json.load(f)
 
-    def setUp(self):
-        print("\n> test setup: " + self.test_name)
-        pass
+    with open("tests/expected_{}.json".format(test_name)) as f:
+        expected = json.load(f)
+    
+    return stderr, output, expected
 
-    def test_generic(self):
-        _, stderr = get_stdouterr_from_popen(
-            'cd .. && python3 -m jexon.execute "tests/test_{test_name}.json" "tests/output_{test_name}.json" "tests/config.json"'.format(test_name=self.test_name))
 
-        if stderr:
-            print(stderr)
-        self.assertEqual(
-            stderr, '', "Test run {} failed.".format(self.test_name))
+class TestGeneric(unittest.TestCase):
 
-        with open("output_{}.json".format(self.test_name)) as f:
-            self.assertEqual(
-                f.closed, False, "Output file for {} could not be opened.".format(self.test_name))
-            output = json.load(f)
-
-        with open("expected_{}.json".format(self.test_name)) as f:
-            self.assertEqual(
-                f.closed, False, "Expected file for {} could not be opened.".format(self.test_name))
-            expected = json.load(f)
-
+    def run_test(self, test_name):
+        stderr, output, expected = run_and_load(test_name)
+        self.assertEqual(stderr, '', "Test run {} failed.".format(test_name))
         self.assertEqual(output, expected, "Output is not as expected.")
+        os.remove("tests/output_{}.json".format(test_name))
 
-        os.remove("output_{}.json".format(self.test_name))
+    def test_flat(self):
+        self.run_test("flat")
 
-    def tearDown(self):
-        print("\n< test teardown: " + self.test_name)
-        pass
+    def test_flat_nested(self):
+        self.run_test("flat_nested")
+        
+    def test_string(self):
+        self.run_test("string")
 
+    def test_flat_modules(self):
+        self.run_test("flat_modules")
 
-def suite():
-    suite = unittest.TestSuite()
-    testFiles = glob.glob('test_*.json')
-    for testFile in testFiles:
-        print(testFile)
-        suite.addTest(TestCase(testFile[5:-5]))
-    return suite
-
-
-if __name__ == '__main__':
-    print("##############################################################################")
-    print("# Running jexon Test Suite")
-    print("##############################################################################")
-    runner = unittest.TextTestRunner()
-    runner.run(suite())
+    def test_nested(self):
+        self.run_test("nested")
