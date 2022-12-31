@@ -25,10 +25,12 @@ class TestCase(unittest.TestCase):
         pass
 
     def test_generic(self):
-        _, stderr = get_stdouterr_from_popen(
+        stdout, stderr = get_stdouterr_from_popen(
             'ls ..'.format(test_name=self.test_name))
             # 'cd .. && ls && python -m jexon.execute "tests/test_{test_name}.json" "tests/output_{test_name}.json" "tests/config.json"'.format(test_name=self.test_name))
-
+        
+        print(stdout)
+        
         if stderr:
             print(stderr)
         self.assertEqual(
