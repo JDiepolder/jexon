@@ -26,10 +26,10 @@ def run_and_load(test_name):
     if stderr:
         print(stderr)
     
-    with open("output_{}.json".format(test_name)) as f:
+    with open("tests/output_{}.json".format(test_name)) as f:
         output = json.load(f)
 
-    with open("expected_{}.json".format(test_name)) as f:
+    with open("tests/expected_{}.json".format(test_name)) as f:
         expected = json.load(f)
         
     return stderr, output, expected
@@ -49,4 +49,4 @@ class TestGeneric(unittest.TestCase):
         stderr, output, expected = run_and_load(test_name)
         self.assertEqual(stderr, '', "Test run {} failed.".format(test_name))
         self.assertEqual(output, expected, "Output is not as expected.")
-        os.remove("output_{}.json".format(test_name))
+        os.remove("tests/output_{}.json".format(test_name))
